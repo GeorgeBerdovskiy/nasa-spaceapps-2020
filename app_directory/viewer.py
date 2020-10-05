@@ -26,9 +26,9 @@ plt.style.use(astropy_mpl_style)
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=["POST", "GET"])
 def view():
-	'''if request.method == "POST":
+	if request.method == "POST":
 		type = str(request.form["type"])
 		waveBand = str(request.form["waveBand"])
 		keyword = str(request.form["keyword"])
@@ -48,20 +48,20 @@ def view():
 			url = "null"
 
 		return render_template("search-results.html", jpg_url=img_url, fits_url=url)
-	else:'''
-	all_xml_dict = []
+	else:
+		all_xml_dict = []
 
-	manual_urls = [
-		"ftp://data.asc-csa.gc.ca/users/OpenData_DonneesOuvertes/pub/NEOSSAT/XML/NEOS_SCI_2018284225800-2018-10-15-02-00-25.xml",
-		"ftp://data.asc-csa.gc.ca/users/OpenData_DonneesOuvertes/pub/NEOSSAT/XML/NEOS_SCI_2018251042635-2018-10-15-01-59-42.xml",
-		"ftp://data.asc-csa.gc.ca/users/OpenData_DonneesOuvertes/pub/NEOSSAT/XML/NEOS_SCI_2018232040619-2018-10-15-10-49-24.xml",
-		"ftp://data.asc-csa.gc.ca/users/OpenData_DonneesOuvertes/pub/NEOSSAT/XML/NEOS_SCI_2018033164500-2018-10-15-12-54-57.xml",
-		"ftp://data.asc-csa.gc.ca/users/OpenData_DonneesOuvertes/pub/NEOSSAT/XML/NEOS_SCI_2017283104140-2018-10-15-12-49-38.xml"]
+		manual_urls = [
+			"ftp://data.asc-csa.gc.ca/users/OpenData_DonneesOuvertes/pub/NEOSSAT/XML/NEOS_SCI_2018284225800-2018-10-15-02-00-25.xml",
+			"ftp://data.asc-csa.gc.ca/users/OpenData_DonneesOuvertes/pub/NEOSSAT/XML/NEOS_SCI_2018251042635-2018-10-15-01-59-42.xml",
+			"ftp://data.asc-csa.gc.ca/users/OpenData_DonneesOuvertes/pub/NEOSSAT/XML/NEOS_SCI_2018232040619-2018-10-15-10-49-24.xml",
+			"ftp://data.asc-csa.gc.ca/users/OpenData_DonneesOuvertes/pub/NEOSSAT/XML/NEOS_SCI_2018033164500-2018-10-15-12-54-57.xml",
+			"ftp://data.asc-csa.gc.ca/users/OpenData_DonneesOuvertes/pub/NEOSSAT/XML/NEOS_SCI_2017283104140-2018-10-15-12-49-38.xml"]
 
-	for url in manual_urls:
-		response = urllib.request.urlopen(url).read()
-		data = xmltodict.parse(response, dict_constructor=dict)
-		all_xml_dict.append(data)
+		for url in manual_urls:
+			response = urllib.request.urlopen(url).read()
+			data = xmltodict.parse(response, dict_constructor=dict)
+			all_xml_dict.append(data)
 
 	return render_template("viewer.html", message="message", test_obj=all_xml_dict)
 
